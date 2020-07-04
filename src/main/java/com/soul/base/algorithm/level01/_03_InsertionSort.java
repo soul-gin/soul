@@ -54,7 +54,7 @@ public class _03_InsertionSort {
 		}*/
 	}
 
-	// for test
+	// for getMatchNum
 	public static void main(String[] args) {
 		int testTime = 500000;
 		int maxSize = 100; // 随机数组的长度0～100

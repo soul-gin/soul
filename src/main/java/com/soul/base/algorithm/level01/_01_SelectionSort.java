@@ -51,6 +51,7 @@ public class _01_SelectionSort {
         // ...
         for (int i = 0; i < arr.length - 1; i++) { // 下标 i ~ N-2
             // 记录最小值在哪个位置上(减少交换次数)  i～n-1
+            // 常数项时间优于第一种, 细节处理的更好
             int minIndex = i;
             for (int j = i + 1; j < arr.length; j++) { // 下标 i ~ N-1 上找最小值的下标
                 minIndex = arr[j] < arr[minIndex] ? j : minIndex;
