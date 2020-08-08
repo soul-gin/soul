@@ -8,6 +8,7 @@ public class GinController {
 
     @GetMapping("/test")
     public String test(String str){
+        //http://localhost:8080/test?str=gin
         return "test: " + str;
     }
 

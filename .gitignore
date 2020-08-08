@@ -5,3 +5,7 @@ target/
 .mvn
 mvnw
 mvnw.cmd
+.gitignore
+base.iml
+src/main/resources/static/
+src/main/resources/templates/
