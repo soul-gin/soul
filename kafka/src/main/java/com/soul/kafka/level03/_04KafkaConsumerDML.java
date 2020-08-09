@@ -11,7 +11,8 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
-public class _04KafkaConsumerDemo {
+//allow parallel run
+public class _04KafkaConsumerDML {
     //先启动消费者, 再启动生产者
     public static void main(String[] args) {
         //1.创建Kafka链接参数
@@ -25,7 +26,7 @@ public class _04KafkaConsumerDemo {
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "group01");
 
         //2.创建Topic消费者
-        KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(props);
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
         //3.订阅topic开头的消息队列
         //匹配指定topic
         //consumer.subscribe(Pattern.compile("topic02"));
@@ -43,8 +44,8 @@ public class _04KafkaConsumerDemo {
                 String value = record.value();
                 long offset = record.offset();
                 int partition = record.partition();
-                System.out.println("kafkaKey:" + key + ", kafkaValue:" + value + ",partition:" + partition + ",offset" +
-                        ":" + offset);
+                System.out.println("kafkaKey:" + key + ", kafkaVal:" + value
+                        + ", partition:" + partition + ", offset:" + offset);
             }
         }
     }

@@ -6,7 +6,7 @@ import org.apache.kafka.common.KafkaFuture;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
-public class _03TopicDMLDemo {
+public class _03TopicDML {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         //配置连接参数
