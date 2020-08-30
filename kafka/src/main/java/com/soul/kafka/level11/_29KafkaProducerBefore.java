@@ -1,10 +1,12 @@
-package com.soul.kafka.level10;
+package com.soul.kafka.level11;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
-import java.util.*;
+
+import java.util.Properties;
+import java.util.UUID;
 
 /**
  *
@@ -27,13 +29,7 @@ isolation.level	=  read_uncommitted 默认
 
  *
  */
-public class KafkaProducerTransactionsProducerOnly {
-    //测试
-    // 运行 KafkaConsumerReadCommitted 和 KafkaConsumerReadUnCommitted 消费端服务
-    // 运行 KafkaProducerTransactionsProducerOnly 生产端服务
-    // 发现 KafkaConsumerReadCommitted 无消费消息
-    // 发现 KafkaConsumerReadUnCommitted 消费了 8 条消息
-    // 可见 生产者对消息事务(是否提交)的标记, 影响设置了 ISOLATION_LEVEL_CONFIG 的消费端
+public class _29KafkaProducerBefore {
     public static void main(String[] args) {
 
         //构建生产者
@@ -46,10 +42,6 @@ public class KafkaProducerTransactionsProducerOnly {
             //开启事务控制
             producer.beginTransaction();
             for (int i = 0; i < 10; i++) {
-                //制造异常
-                if (i == 8){
-                    int gin = 8 / 0;
-                }
                 //创建Record
                 ProducerRecord<String, String> producerRecord = new ProducerRecord<>("topic02",
                         "K" + i, "V" + i);

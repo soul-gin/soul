@@ -32,7 +32,7 @@ isolation.level	=  read_uncommitted 默认
 同一时刻只能有一个"transactional.id"存储在，其他的将会被关闭。
  *
  */
-public class KafkaProducerAndConsumerMiddle {
+public class _28KafkaProducerAndConsumerMiddle {
     // 消费者&生产者, 场景:
     // 当前消费端订阅上游(topic02)的消息(record),
     // 消费成功且成功将加工后的消息发送给下游(topic03)后,
@@ -43,9 +43,9 @@ public class KafkaProducerAndConsumerMiddle {
     // kafka-topics.sh --bootstrap-server kafka01:9092,kafka02:9092,kafka03:9092 --create --partitions 2 --replication-factor 2 --topic topic03
     // 查看创建的topic列表
     // kafka-topics.sh --bootstrap-server kafka01:9092,kafka02:9092,kafka03:9092 --list
-    // 运行 KafkaConsumerAfter 下游消费者服务器
-    // 运行 KafkaProducerAndConsumerMiddle 消费者&生产者事务服务器
-    // 运行 KafkaProducerBefore 生产发送上游消息
+    // 运行 _27KafkaConsumerAfter 下游消费者服务器
+    // 运行 _28KafkaProducerAndConsumerMiddle 消费者&生产者事务服务器
+    // 运行 _29KafkaProducerBefore 生产发送上游消息
     // 发现 消息从middle(topic02)加工处理后, 流转到了下游after(topic03)
     public static void main(String[] args) {
 
@@ -140,7 +140,6 @@ public class KafkaProducerAndConsumerMiddle {
         //序列化 反序列化
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        //与 KafkaConsumerReadUnCommitted 需不同组来验证
         props.put(ConsumerConfig.GROUP_ID_CONFIG, group);
         //设置事务隔离级别, 读已提交(仅仅消费有提交标记的消息)
         props.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed");
