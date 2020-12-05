@@ -58,7 +58,6 @@
 > node03发起投票, 并给自己投一票, 将(myid=3, Zxid=7)消息发送给node01和node02, 假设先到node01, node01发现(myid=3, Zxid=7)比较自己的(myid=1, Zxid=8), Zxid更小, 则拒绝, 并触发自己发起投票(认为对方投票无效, 发起自认为正确的投票), 并给自己投票, 把(myid=1, Zxid=8)发送给node02和node03节点
 > 假设消息到了node02, node02把(myid=1, Zxid=8)和自己的(myid=2, Zxid=8)比较后, 拒绝给node01投票, 并自己发起投票, 且给自己投票
 > 最终node02会在集群中达到共识3票, node01达到2票, node02会成为新的Leader并开启2888端口
-> 
 
 > 对外: 提供数据可靠可用, 保证一致性(最终一致性)
 
@@ -283,10 +282,21 @@ Created /seNode/seq0000000000
 > 通过zk目录树结构(统一视图)
 > 例: 两client有需求, client间互相检测是否存活
 > 方案1: client之间心跳检测, 由client实现
-> 方案2: 基于zk的watch功能, client1在zk上创建临时节点 /tmp/client1 , client2可以通过get /tmp/client1 查询到对应节点后, 再通过 watch /tmp/client1 来监控; 同时 /tmp/client1 (会包含事件(event): create delete change children ), 
-```shell
+> 方案2: 基于zk的watch功能, client1在zk上创建临时节点 /tmp/client1 , client2可以通过get /tmp/client1 查询到对应节点后, 再通过 watch /tmp/client1 来监控; 同时 /tmp/client1 (会包含事件(event): create delete change children )
 
-```
+> zk的watch
+> 1. 创建一个路径
+> 2. get/watch对应的路径
+> 3. 如果对应路径数据发生变更, 则会触发回调
+
+##### 分布式锁
+> 争抢锁, 只有一个人可以获得锁
+> 获得锁的人出了问题不会死锁(redis mysql处理是通过过期时间, 并使用守护线程续租), 而zk的临时节点通过session处理, 不需要过期时间, 出问题则session被释放
+>  获得锁的人处理成功了, 需要释放锁
+> 锁被释放, 删除, 如何通知别人:
+> 1. 主动轮询, 心跳 (弊端: 延时, 通讯压力)
+> 2. watch: 回调方式(解决延时问题, 弊端: 通讯压力, 回调很多监控节点, 且多节点并发抢锁)
+> 3. sequence+watch(临时序列公平锁, 按先到排前面, 每个后面排队的序列监控前面的排队序列; 最小的获得锁, 一旦最小的获得锁, zk只给第二小的节点发送回调事件, 避免了通讯压力(惊群))
 
 ##### zookeeper应用
 > 统一配置管理, 1M数据(节点可存储)
@@ -296,5 +306,3 @@ Created /seNode/seq0000000000
 > 1. 普通分布式锁, 直接使用临时节点
 > 2. 队列式事务锁, 锁都依托一个父节点且具备 -s , 代表父节点可以有多把顺序排列的锁(后面的锁监听前面锁)
 > 3. HA选主, 先抢到锁的作为主(先在zk创建成功节点)
-
-

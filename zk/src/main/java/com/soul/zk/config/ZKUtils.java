@@ -2,7 +2,6 @@ package com.soul.zk.config;
 
 import org.apache.zookeeper.ZooKeeper;
 
-import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
 public class ZKUtils {
@@ -20,6 +19,10 @@ public class ZKUtils {
 
     //等待zk创建成功
     private static CountDownLatch init = new CountDownLatch(1);
+
+    public static void setAddress(String address) {
+        ZKUtils.address = address;
+    }
 
     public static ZooKeeper getZK(){
         try {
