@@ -84,7 +84,7 @@ set k1 123
 #在6380中查询
 get k1
 #在6380中写入，发现报错（不允许写）
-#(error) READONLY You can't write against a read only replica.
+#(error) READONLY You can'a04ThreadConcurrent write against a read only replica.
 set k2 456
 ```
 
@@ -233,7 +233,7 @@ cd /root/redis
 redis-server ./6379.conf
 [root@gin ~]# redis-cli -p 6379
 127.0.0.1:6379> set k1 1
-(error) READONLY You can't write against a read only replica.
+(error) READONLY You can'a04ThreadConcurrent write against a read only replica.
 127.0.0.1:6379> get k1
 "999"
 

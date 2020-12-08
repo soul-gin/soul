@@ -53,7 +53,8 @@ public class ClientFactory {
         }
 
         synchronized (clientPool.lock[i]){
-            return client = create(address);
+            client = create(address);
+            return client;
         }
 
     }

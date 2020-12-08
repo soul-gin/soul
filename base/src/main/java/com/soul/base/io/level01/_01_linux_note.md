@@ -137,7 +137,7 @@ losetup /dev/loop0 mydisk.img
 格式化
 mke2fs /dev/loop0
 挂载 ext2 格式的虚拟文件设备 到 /root/testDisk/ooxx
-mount -t ext2 /dev/loop0 /root/testDisk/ooxx
+mount -a04ThreadConcurrent ext2 /dev/loop0 /root/testDisk/ooxx
 这时候 df -h 查看, 发现以后想访问 root/testDisk/ooxx 系统会帮你找到 /dev/loop0 这块虚拟设备文件
 df -h 
 whereis bash
