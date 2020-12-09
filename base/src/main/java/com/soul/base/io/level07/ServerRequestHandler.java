@@ -1,11 +1,10 @@
 package com.soul.base.io.level07;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import java.io.ByteArrayInputStream;
-import java.io.ObjectInputStream;
 
 
 public class ServerRequestHandler extends ChannelInboundHandlerAdapter {
@@ -14,35 +13,54 @@ public class ServerRequestHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
-        ByteBuf buf = (ByteBuf) msg;
-        ByteBuf sendBuf = buf.copy();
+        PackMsg reqPackMsg = (PackMsg) msg;
+        System.out.println("ServerRequestHandler: " + reqPackMsg.body.methodName);
 
 
-        //至少保证header是有的(计算字节数, 一个int, 两个long (4+8+8) * 8bit = 160 bit位)
-        //实际经过序列化会有一定变化, 通过byte[]的length属性查看
-        if (buf.readableBytes() >= 103){
-            byte[] bytes = new byte[103];
-            buf.readBytes(bytes);
-            ByteArrayInputStream bIn = new ByteArrayInputStream(bytes);
-            ObjectInputStream oIn = new ObjectInputStream(bIn);
-            MyHeader header = (MyHeader)oIn.readObject();
 
-            //获取数据长度, 以便确定需要如何读取
-            System.out.println("dataLength=" + header.getDataLen() + " requestID=" + header.getRequestID());
-            if (buf.readableBytes() >= header.getDataLen()){
-                byte[] data = new byte[(int)header.getDataLen()];
-                buf.readBytes(data);
-                ByteArrayInputStream bIn2 = new ByteArrayInputStream(data);
-                ObjectInputStream oIn2 = new ObjectInputStream(bIn2);
-                MyContent body = (MyContent)oIn2.readObject();
-                System.out.println("methodName=" + body.getMethodName());
+        //关注rpc通讯协议, 来的时候flag 是 0x14141414
+        //返回会有新的header+body
+        //1. 可以直接在当前方法中处理IO业务和返回
+        //2. 也可以使用netty自己的eventloop来处理业务及返回
+        String ioThreadName = Thread.currentThread().getName();
+        ctx.executor().execute(new Runnable() {
+            @Override
+            public void run() {
+                String execThreadName = Thread.currentThread().getName();
+
+                MyContent body = new MyContent();
+                String res = "ioThreadName=" + ioThreadName + " execThreadName=" + execThreadName
+                        + " from args:" + reqPackMsg.body.getArgs()[0];
+                System.out.println("server res=" + res);
+                body.setRes(res);
+                //序列化
+                byte[] bodyByte = SerDerUtil.ser(body);
+
+                MyHeader header = new MyHeader();
+                header.setRequestID(reqPackMsg.header.getRequestID());
+                //返回的码值
+                header.setFlag(0x14141424);
+                header.setDataLen(bodyByte.length);
+                //序列化
+                byte[] headerByte = SerDerUtil.ser(header);
+                //System.out.println("server header.length=" + headerByte.length);
+
+                //转换成字节数组返回
+                ByteBuf byteBuf = PooledByteBufAllocator.DEFAULT.directBuffer(headerByte.length + bodyByte.length);
+                byteBuf.writeBytes(headerByte);
+                byteBuf.writeBytes(bodyByte);
+
+
+                ChannelFuture channelFuture = ctx.writeAndFlush(byteBuf);
+                try {
+                    //channelFuture.sync();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+        });
 
-        }
-
-        //先直接原样返回
-        ChannelFuture channelFuture = ctx.writeAndFlush(sendBuf);
-        channelFuture.sync();
 
     }
+
 }

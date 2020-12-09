@@ -1,9 +1,3 @@
-/**
- * 分析一下这个程序的输出
- *
- * @author mashibing
- */
-
 package com.soul.base.juc.level01;
 
 import java.util.LinkedList;
@@ -37,6 +31,35 @@ synchronized hotspot实现(没有规范,不同虚拟机实现可以不同):
 | 指向锁记录的指针 | 00 | 轻量级锁 |
 | 指向重量级锁的指针 | 10 | 重量级锁 |
 | 空 | 11 | GC标记 |
+
+
+volatile
+1.保障线程可见性
+ - MESI
+ - 缓存一致性协议
+2.禁止指令重排序(防止读取到刚初始化的值)
+ - DCL单例
+ - Double check lock
+ - load fence / store fence 读写屏障(保障命令前的读/写操作全处理完成再继续后续操作)
+
+ cas(无锁优化 自旋)
+ Compare And Set
+ cas(V, Expected, NewValue)
+ (V-要改的值, Expected-期望当前要被改的值执行cas时查询到(get)的是多少, NewValue-需要将要改的值被设定成的值)
+ - if V == E
+   V = New
+   otherwise try again or fail
+
+ 假设要将一个a=0 执行 a=a+1
+ 那么执行操作时 V=0 , E=0 , NEW=1 则能修改成功
+ 如果执行操作时 V=0 , E=2 , NEW=1 则表示V被其他线程修改了, V != E 则重新获取参数并执行方法(V=2 , E=2 , NEW=3)
+
+ ABA问题, 主要针对包装类型, 基础类型(基础类型的包装类型)无所谓; 你的女朋友跟别人跑了, 又回来找你了, 已经不是原来那个女朋友了
+ 原因: 包装类型只比较了地址值(而对象的属性值补比较, 实际可能已经被其他线程修改了)
+ 线程1:  设置流程: filed = A -> filed = B -> filed = A
+ 线程2:  设置流程: A(A里面某些属性值被修改, 婚姻状态-离婚)
+ 假设: 线程1执行到 filed = B 时, 线程2改了A的值, 线程1原本想将 filed 设置成最开始的A(没改婚姻状态的), 但实际设置的是A(婚姻状态-离婚)
+
 
  */
 public class _03_Synchronized {

@@ -7,11 +7,17 @@ public class MyContent implements Serializable {
 
     String name;
 
+    //方法名
     String methodName;
 
+    //参数类型
     Class<?>[] parameterTypes;
 
+    //参数
     Object[] args;
+
+    //返回结果
+    String res;
 
     public String getName() {
         return name;
@@ -43,5 +49,13 @@ public class MyContent implements Serializable {
 
     public void setArgs(Object[] args) {
         this.args = args;
+    }
+
+    public String getRes() {
+        return res;
+    }
+
+    public void setRes(String res) {
+        this.res = res;
     }
 }

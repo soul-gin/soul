@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientFactory {
 
-    int poolSize = 1;
+    int poolSize = 5;
 
     Random rand = new Random();
 

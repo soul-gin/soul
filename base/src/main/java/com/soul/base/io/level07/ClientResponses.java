@@ -18,6 +18,8 @@ public class ClientResponses extends ChannelInboundHandlerAdapter {
         if (buf.readableBytes() >= 103){
             byte[] bytes = new byte[103];
             buf.readBytes(bytes);
+            System.out.println(bytes.length);
+
             ByteArrayInputStream bIn = new ByteArrayInputStream(bytes);
             ObjectInputStream oIn = new ObjectInputStream(bIn);
             MyHeader header = (MyHeader)oIn.readObject();

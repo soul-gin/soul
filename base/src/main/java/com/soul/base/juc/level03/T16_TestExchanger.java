@@ -4,6 +4,7 @@ import java.util.concurrent.Exchanger;
 
 public class T16_TestExchanger {
 
+    //交换器, 用于线程之间数据的交换
     static Exchanger<String> exchanger = new Exchanger<>();
 
     public static void main(String[] args) {
