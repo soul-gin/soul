@@ -10,7 +10,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.junit.Test;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -19,7 +18,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.InetSocketAddress;
 import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -76,18 +75,17 @@ public class MyRPCTest {
 
         System.out.println("server started......");
 
-        //动态代理实现
-        Car car = proxyGet(Car.class);
-        car.getCarInfo("hello");
-
         //模拟并发情况下, 可能会出现header切割异常问题, 需要处理
-        int size = 60;
+        int size = 20;
         AtomicInteger count = new AtomicInteger(0);
         Thread[] threads = new Thread[size];
         for (int i = 0; i < size; i++) {
             threads[i] = new Thread(() -> {
-                Car car2 = proxyGet(Car.class);
-                car2.getCarInfo("hello" + count.incrementAndGet());
+                //动态代理实现
+                Car car = proxyGet(Car.class);
+                String reqMsg = "hello" + count.incrementAndGet();
+                String carInfo = car.getCarInfo(reqMsg);
+                System.out.println("client over carInfo=" + carInfo + " reqMsg=" + reqMsg);
             });
         }
 
@@ -101,8 +99,6 @@ public class MyRPCTest {
             e.printStackTrace();
         }
 
-//        Fly fly = proxyGet(Fly.class);
-//        fly.getFlyInfo("hello");
     }
 
     @SuppressWarnings("unchecked")
@@ -142,6 +138,7 @@ public class MyRPCTest {
                 oOut = new ObjectOutputStream(bOut);
                 oOut.writeObject(header);
                 byte[] msgHeader = bOut.toByteArray();
+                //测试header大小, header大小一般协议固定
                 //System.out.println("msgHeader length=" + msgHeader.length);
 
                 //3. 获取连接池
@@ -152,15 +149,9 @@ public class MyRPCTest {
                 //4. 发送 -> 走IO
                 ByteBuf byteBuf = PooledByteBufAllocator.DEFAULT.directBuffer(msgHeader.length + msgBody.length);
 
-                CountDownLatch cd = new CountDownLatch(1);
                 long id = header.getRequestID();
-                ResponseHandler.addCallBack(id, new Runnable() {
-                    @Override
-                    public void run() {
-                        //接受到返回数据就放行 cd
-                        cd.countDown();
-                    }
-                });
+                CompletableFuture<String> resp = new CompletableFuture<>();
+                ResponseMappingCallback.addCallBack(id, resp);
 
                 byteBuf.writeBytes(msgHeader);
                 byteBuf.writeBytes(msgBody);
@@ -168,13 +159,10 @@ public class MyRPCTest {
                 //io是双向的, sync仅仅阻塞至数据发送完成, 并不会等待至数据接收
                 channelFuture.sync();
 
-                //这里先不做超时限制
-                cd.await();
 
-                //5. 如果走IO, 未来回来了, 怎么将代码执行到这里
-                //(睡眠/回调, 如何让线程停下来?还能让线程继续)
-
-                return null;
+                //5. 如果走IO, 未来回来了, CompletableFuture 通过complete设置, get获取
+                //resp.complete(设置值)
+                return resp.get();
             }
         });
 

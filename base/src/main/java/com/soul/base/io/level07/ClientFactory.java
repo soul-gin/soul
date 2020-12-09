@@ -6,7 +6,6 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-
 import java.net.InetSocketAddress;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
@@ -70,6 +69,8 @@ public class ClientFactory {
                     @Override
                     protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
                         ChannelPipeline p = nioSocketChannel.pipeline();
+                        //也可以做类似server端的decode处理
+                        p.addLast(new ServerDecode());
                         //处理: 1. 解决给谁, 2.数据处理
                         p.addLast(new ClientResponses());
                     }
