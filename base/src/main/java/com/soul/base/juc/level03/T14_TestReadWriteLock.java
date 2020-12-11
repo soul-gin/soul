@@ -6,6 +6,9 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+/**
+ * 读写锁就是: 共享锁和排他锁(读共享,允许读不允许读操作; 写排他,写不允许其他读或写)
+ */
 public class T14_TestReadWriteLock {
     static Lock lock = new ReentrantLock();
     private static int value;

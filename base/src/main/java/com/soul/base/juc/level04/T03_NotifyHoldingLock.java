@@ -1,4 +1,3 @@
-
 package com.soul.base.juc.level04;
 
 import java.util.Collections;
@@ -22,8 +21,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class T03_NotifyHoldingLock { //wait notify
 
-	//添加volatile，使t2能够得到通知
-	volatile List lists = Collections.synchronizedList(new LinkedList<>());
+	List lists = Collections.synchronizedList(new LinkedList<>());
 
 	public void add(Object o) {
 		lists.add(o);
@@ -43,6 +41,7 @@ public class T03_NotifyHoldingLock { //wait notify
 				System.out.println("t2启动");
 				if(c.size() != 5) {
 					try {
+						//释放锁, 进入等待状态
 						lock.wait();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
@@ -52,7 +51,8 @@ public class T03_NotifyHoldingLock { //wait notify
 			}
 			
 		}, "t2").start();
-		
+
+		//保证t2线程先启动, 获取到锁后, 进入等待状态
 		try {
 			TimeUnit.SECONDS.sleep(1);
 		} catch (InterruptedException e1) {
@@ -61,12 +61,15 @@ public class T03_NotifyHoldingLock { //wait notify
 
 		new Thread(() -> {
 			System.out.println("t1启动");
+			//获取锁, 开始执行任务
 			synchronized(lock) {
 				for(int i=0; i<10; i++) {
 					c.add(new Object());
 					System.out.println("add " + i);
 					
 					if(c.size() == 5) {
+						//注意, 这里虽然把t2唤醒了, 但是notify操作不会释放当前线程的锁
+						//要想当前线程释放锁, 必须使用wait方法
 						lock.notify();
 					}
 					

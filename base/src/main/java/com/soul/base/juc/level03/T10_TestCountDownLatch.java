@@ -15,6 +15,7 @@ public class T10_TestCountDownLatch {
 
     private static void usingCountDownLatch() {
         Thread[] threads = new Thread[100];
+        //倒数 门闩 (CountDownLatch)
         CountDownLatch latch = new CountDownLatch(threads.length);
 
         for(int i=0; i<threads.length; i++) {

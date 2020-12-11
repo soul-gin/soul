@@ -47,6 +47,7 @@ public class T04_NotifyFreeLock {
 				System.out.println("t2启动");
 				if(c.size() != 5) {
 					try {
+						//队列中自旋等待获取锁
 						lock.wait();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
@@ -74,8 +75,8 @@ public class T04_NotifyFreeLock {
 					
 					if(c.size() == 5) {
 						lock.notify();
-						//释放锁，让t2得以执行
 						try {
+							//释放锁，并让t1进行等待, 让t2得以抢到锁并执行
 							lock.wait();
 						} catch (InterruptedException e) {
 							e.printStackTrace();
