@@ -19,22 +19,27 @@ import java.util.concurrent.locks.ReentrantLock;
 public class T10_MyContainer2<T> {
 	final private LinkedList<T> lists = new LinkedList<>();
 	final private int MAX = 10; //最多10个元素
-	private int count = 0;
+	static int count = 0;
 	
 	private Lock lock = new ReentrantLock();
+	//Condition精确叫醒 生产者 或 消费者
+	//本质是等待队列个数不同(两次newCondition创建了两个等待队列, 而普通的wait和notify只有一个等待队列)
 	private Condition producer = lock.newCondition();
 	private Condition consumer = lock.newCondition();
 	
 	public void put(T t) {
 		try {
 			lock.lock();
-			while(lists.size() == MAX) { //想想为什么用while而不是用if？
+			//while防止等待被唤醒后直接执行后续逻辑
+			while(lists.size() == MAX) {
 				producer.await();
 			}
 			
 			lists.add(t);
 			++count;
-			consumer.signalAll(); //通知消费者线程进行消费
+			//通知消费者线程进行消费
+			//指定叫醒
+			consumer.signalAll();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} finally {
@@ -46,12 +51,15 @@ public class T10_MyContainer2<T> {
 		T t = null;
 		try {
 			lock.lock();
+			//while防止等待被唤醒后直接执行后续逻辑
 			while(lists.size() == 0) {
 				consumer.await();
 			}
 			t = lists.removeFirst();
 			count --;
-			producer.signalAll(); //通知生产者进行生产
+			//指定叫醒
+			//通知生产者进行生产
+			producer.signalAll();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} finally {
@@ -81,5 +89,12 @@ public class T10_MyContainer2<T> {
 				for(int j=0; j<25; j++) c.put(Thread.currentThread().getName() + " " + j);
 			}, "p" + i).start();
 		}
+
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println("count end=" + count);
 	}
 }

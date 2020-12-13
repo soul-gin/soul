@@ -54,7 +54,7 @@ public class T03_SyncVsLongAdder {
         end = System.currentTimeMillis();
 
 
-        System.out.println("Sync: " + count2 + " time " + (end-start));
+        System.out.println("T13_Sync: " + count2 + " time " + (end-start));
 
     }
 

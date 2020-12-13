@@ -290,7 +290,7 @@ yum install -y ntp
 #使用阿里云服务同步
 ntpdate ntp1.aliyun.com
 # 查看当前时间
-date +"%Y-%m-%d %H-%M-%S"
+date +"%Y-%t03M-%d %H-%M-%S"
 
 # 直接在github上下载zip包
 # 或者
@@ -377,7 +377,7 @@ yum install -y ntp
 #使用阿里云服务同步
 ntpdate ntp1.aliyun.com
 # 查看当前时间
-date +"%Y-%m-%d %H-%M-%S"
+date +"%Y-%t03M-%d %H-%M-%S"
 
 # 离线安装方式: 跟进linux版本选择 automake、libtool、autoconf
 automake-1.12.1.tar.gz 包下载地址：http://ftp.gnu.org/gnu/automake/

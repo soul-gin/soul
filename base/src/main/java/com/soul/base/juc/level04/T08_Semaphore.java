@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 public class T08_Semaphore {
-    // 添加volatile，使t2能够得到通知
+
     volatile List lists = new ArrayList();
 
     public void add(Object o) {
@@ -36,6 +36,8 @@ public class T08_Semaphore {
                 e.printStackTrace();
             }
 
+            //仅限于t2线程只干一件事情, 实现不是特别优雅
+            //由t1来控制t2
             try {
                 t2.start();
                 t2.join();

@@ -56,7 +56,7 @@ public class T02_AtomicVsSyncVsLongAdder {
         end = System.currentTimeMillis();
 
 
-        System.out.println("Sync: " + count2 + " time " + (end-start));
+        System.out.println("T13_Sync: " + count2 + " time " + (end-start));
 
 
         //----------------------------------
