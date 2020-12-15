@@ -4,38 +4,38 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * ÓĞNÕÅ»ğ³µÆ±£¬Ã¿ÕÅÆ±¶¼ÓĞÒ»¸ö±àºÅ
- * Í¬Ê±ÓĞ10¸ö´°¿Ú¶ÔÍâÊÛÆ±
- * ÇëĞ´Ò»¸öÄ£Äâ³ÌĞò
+ * æœ‰Nå¼ ç«è½¦ç¥¨ï¼Œæ¯å¼ ç¥¨éƒ½æœ‰ä¸€ä¸ªç¼–å·
+ * åŒæ—¶æœ‰10ä¸ªçª—å£å¯¹å¤–å”®ç¥¨
+ * è¯·å†™ä¸€ä¸ªæ¨¡æ‹Ÿç¨‹åº
  *
- * ·ÖÎöÏÂÃæµÄ³ÌĞò¿ÉÄÜ»á²úÉúÄÄĞ©ÎÊÌâ£¿
- * ÖØ¸´ÏúÊÛ£¿³¬Á¿ÏúÊÛ£¿
+ * åˆ†æä¸‹é¢çš„ç¨‹åºå¯èƒ½ä¼šäº§ç”Ÿå“ªäº›é—®é¢˜ï¼Ÿ
+ * é‡å¤é”€å”®ï¼Ÿè¶…é‡é”€å”®ï¼Ÿ
  *
- * Ê¹ÓÃVector»òÕßCollections.synchronizedXXX
- * ·ÖÎöÒ»ÏÂ£¬ÕâÑùÄÜ½â¾öÎÊÌâÂğ£¿
+ * ä½¿ç”¨Vectoræˆ–è€…Collections.synchronizedXXX
+ * åˆ†æä¸€ä¸‹ï¼Œè¿™æ ·èƒ½è§£å†³é—®é¢˜å—ï¼Ÿ
  *
- * ¾ÍËã²Ù×÷AºÍB¶¼ÊÇÍ¬²½µÄ£¬µ«AºÍB×é³ÉµÄ¸´ºÏ²Ù×÷Ò²Î´±ØÊÇÍ¬²½µÄ£¬ÈÔÈ»ĞèÒª×Ô¼º½øĞĞÍ¬²½
- * ¾ÍÏñÕâ¸ö³ÌĞò£¬ÅĞ¶ÏsizeºÍ½øĞĞremove±ØĞëÊÇÒ»Õû¸öµÄÔ­×Ó²Ù×÷
+ * å°±ç®—æ“ä½œAå’ŒBéƒ½æ˜¯åŒæ­¥çš„ï¼Œä½†Aå’ŒBç»„æˆçš„å¤åˆæ“ä½œä¹Ÿæœªå¿…æ˜¯åŒæ­¥çš„ï¼Œä»ç„¶éœ€è¦è‡ªå·±è¿›è¡ŒåŒæ­¥
+ * å°±åƒè¿™ä¸ªç¨‹åºï¼Œåˆ¤æ–­sizeå’Œè¿›è¡Œremoveå¿…é¡»æ˜¯ä¸€æ•´ä¸ªçš„åŸå­æ“ä½œ
  *
- * Ê¹ÓÃConcurrentQueueÌá¸ß²¢·¢ĞÔ
+ * ä½¿ç”¨ConcurrentQueueæé«˜å¹¶å‘æ€§
  *
  */
 public class T20_TicketSeller4 {
 	static Queue<String> tickets = new ConcurrentLinkedQueue<>();
-	
-	
+
+
 	static {
-		for(int i=0; i<1000; i++) tickets.add("Æ± ±àºÅ£º" + i);
+		for(int i=0; i<1000; i++) tickets.add("ç¥¨ ç¼–å·ï¼š" + i);
 	}
-	
+
 	public static void main(String[] args) {
-		
+
 		for(int i=0; i<10; i++) {
 			new Thread(()->{
 				while(true) {
 					String s = tickets.poll();
 					if(s == null) break;
-					else System.out.println("ÏúÊÛÁË--" + s);
+					else System.out.println("é”€å”®äº†--" + s);
 				}
 			}).start();
 		}

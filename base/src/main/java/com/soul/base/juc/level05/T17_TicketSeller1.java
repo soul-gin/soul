@@ -4,30 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ÓĞNÕÅ»ğ³µÆ±£¬Ã¿ÕÅÆ±¶¼ÓĞÒ»¸ö±àºÅ
- * Í¬Ê±ÓĞ10¸ö´°¿Ú¶ÔÍâÊÛÆ±
- * ÇëĞ´Ò»¸öÄ£Äâ³ÌĞò
+ * æœ‰Nå¼ ç«è½¦ç¥¨ï¼Œæ¯å¼ ç¥¨éƒ½æœ‰ä¸€ä¸ªç¼–å·
+ * åŒæ—¶æœ‰10ä¸ªçª—å£å¯¹å¤–å”®ç¥¨
+ * è¯·å†™ä¸€ä¸ªæ¨¡æ‹Ÿç¨‹åº
  *
  *
- * ·ÖÎöÏÂÃæµÄ³ÌĞò¿ÉÄÜ»á²úÉúÄÄĞ©ÎÊÌâ£¿
- * ³¬Âô(×îºóÒ»ÕÅÆ±¶à¸öÏß³Ì»áÂô³ö, µ¼ÖÂremove¿Õ)
- * ¿ÉÄÜ»áÅ×´¦ java.lang.ArrayIndexOutOfBoundsException
- * ÎÊÌâ:1.ÈİÆ÷±¾Éí·ÇÍ¬²½ 2.ÅĞ¶ÏºÍÒÆ³ıÂß¼­ĞèÒªÍ¬²½(ÕâÁ½¸ö²Ù×÷ĞèÒª±£Ö¤Ô­×ÓĞÔ)
+ * åˆ†æä¸‹é¢çš„ç¨‹åºå¯èƒ½ä¼šäº§ç”Ÿå“ªäº›é—®é¢˜ï¼Ÿ
+ * è¶…å–(æœ€åä¸€å¼ ç¥¨å¤šä¸ªçº¿ç¨‹ä¼šå–å‡º, å¯¼è‡´removeç©º)
+ * å¯èƒ½ä¼šæŠ›å¤„ java.lang.ArrayIndexOutOfBoundsException
+ * é—®é¢˜:1.å®¹å™¨æœ¬èº«éåŒæ­¥ 2.åˆ¤æ–­å’Œç§»é™¤é€»è¾‘éœ€è¦åŒæ­¥(è¿™ä¸¤ä¸ªæ“ä½œéœ€è¦ä¿è¯åŸå­æ€§)
  */
 public class T17_TicketSeller1 {
 	static List<String> tickets = new ArrayList<>();
-	
+
 	static {
-		for(int i=0; i<10000; i++) tickets.add("Æ±±àºÅ£º" + i);
+		for(int i=0; i<10000; i++) tickets.add("ç¥¨ç¼–å·ï¼š" + i);
 	}
-	
-	
-	
+
+
+
 	public static void main(String[] args) {
 		for(int i=0; i<10; i++) {
 			new Thread(()->{
 				while(tickets.size() > 0) {
-					System.out.println("ÏúÊÛÁË--" + tickets.remove(0));
+					System.out.println("é”€å”®äº†--" + tickets.remove(0));
 				}
 			}).start();
 		}
