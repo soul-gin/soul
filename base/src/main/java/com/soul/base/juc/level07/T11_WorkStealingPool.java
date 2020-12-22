@@ -7,6 +7,8 @@ import java.util.concurrent.TimeUnit;
 
 public class T11_WorkStealingPool {
 	public static void main(String[] args) throws IOException {
+		//每个线程有自己的队列, 如果有线程执行完了自己队列中的任务, 那么线程会偷取(steal)其他线程队列中的任务执行
+		//本质上创建的是 ForkJoinPool
 		ExecutorService service = Executors.newWorkStealingPool();
 		System.out.println(Runtime.getRuntime().availableProcessors());
 
