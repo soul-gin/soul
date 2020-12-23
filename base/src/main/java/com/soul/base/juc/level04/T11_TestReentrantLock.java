@@ -17,7 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * 如新来节点未抢到则排至队列末端, 如抢到则新来的线程先执行(是否公平针对的是新来的线程, 如无新来线程每次从队列头节点获取线程获得锁)
  *
  * AQS volatile state(AQS使用CAS和volatile实现: state和队列新增节点的操作均通过CAS保证一致性,并未使用锁)
- * (不同子类根据state可以有不同实现哎i你: 可重入锁 0->1表示加了锁, 1->2表示重入加锁, 2->1重入锁释放, 1->0锁释放)
+ * (不同子类根据state可以有不同实现: 可重入锁 0->1表示加了锁, 1->2表示重入加锁, 2->1重入锁释放, 1->0锁释放)
  */
 public class T11_TestReentrantLock {
 

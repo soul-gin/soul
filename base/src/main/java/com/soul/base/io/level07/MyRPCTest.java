@@ -10,6 +10,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.junit.Test;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -37,9 +38,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class MyRPCTest {
 
-    //模拟server端
+    //模拟server端(提供方)
     @Test
     public void startServer(){
+
+        //具体服务端的实现类
+        MyCar car = new MyCar();
+        //设置全局Map信息
+        Dispatcher dis = new Dispatcher();
+        dis.register(Car.class.getName(), car);
 
         NioEventLoopGroup boss = new NioEventLoopGroup(10);
         NioEventLoopGroup work = boss;
@@ -49,12 +56,12 @@ public class MyRPCTest {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel channel) throws Exception {
-                        System.out.println("server accept client port=" + channel.remoteAddress().getPort());
+                        //System.out.println("server accept client port=" + channel.remoteAddress().getPort());
                         ChannelPipeline p = channel.pipeline();
                         //编解码器
                         p.addLast(new ServerDecode());
-                        //数据处理
-                        p.addLast(new ServerRequestHandler());
+                        //数据处理, 添加全局参数
+                        p.addLast(new ServerRequestHandler(dis));
                     }
                 }).bind(new InetSocketAddress("localhost", 9090));
 
@@ -66,7 +73,7 @@ public class MyRPCTest {
 
     }
 
-    //模拟consumer端
+    //模拟consumer端(调用方)
     @Test
     public void getCarInfo(){
         new Thread(() -> {
@@ -85,7 +92,7 @@ public class MyRPCTest {
                 Car car = proxyGet(Car.class);
                 String reqMsg = "hello" + count.incrementAndGet();
                 String carInfo = car.getCarInfo(reqMsg);
-                System.out.println("client over carInfo=" + carInfo + " reqMsg=" + reqMsg);
+                System.out.println("client over resMsg=" + carInfo + " reqMsg=" + reqMsg);
             });
         }
 
