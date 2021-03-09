@@ -5,16 +5,16 @@ import java.util.concurrent.Executors;
 
 public class T07_SingleThreadPool {
 	public static void main(String[] args) {
-		//ÔÊĞíÇëÇóµÄ¶ÓÁĞÉÏÏŞÎª Integer.MAX_VALUE ¿ÉÄÜ»áµ¼ÖÂOOM
-		//Ò»¸öÏß³ÌµÄÏß³Ì³Ø, ¿ÉÒÔ±£ÕÏË³ĞòÖ´ĞĞ(ÓĞ¶ÓÁĞ, ÇÒÓĞÕûÌå¹ÜÀí, ±È×Ô¼ºnew Thread¸üÓÅ)
+		//å…è®¸è¯·æ±‚çš„é˜Ÿåˆ—ä¸Šé™ä¸º Integer.MAX_VALUE å¯èƒ½ä¼šå¯¼è‡´OOM
+		//ä¸€ä¸ªçº¿ç¨‹çš„çº¿ç¨‹æ± , å¯ä»¥ä¿éšœé¡ºåºæ‰§è¡Œ(æœ‰é˜Ÿåˆ—, ä¸”æœ‰æ•´ä½“ç®¡ç†, æ¯”è‡ªå·±new Threadæ›´ä¼˜)
 		ExecutorService service = Executors.newSingleThreadExecutor();
 		for(int i=0; i<5; i++) {
 			final int j = i;
 			service.execute(()->{
-				
+
 				System.out.println(j + " " + Thread.currentThread().getName());
 			});
 		}
-			
+
 	}
 }

@@ -3,8 +3,8 @@ package com.soul.base.juc.level07;
 import java.util.concurrent.*;
 
 /**
- * ÈÏÊ¶Callable£¬¶ÔRunnable½øĞĞÁËÀ©Õ¹
- * ¶ÔCallableµÄµ÷ÓÃ£¬¿ÉÒÔÓĞ·µ»ØÖµ
+ * è®¤è¯†Callableï¼Œå¯¹Runnableè¿›è¡Œäº†æ‰©å±•
+ * å¯¹Callableçš„è°ƒç”¨ï¼Œå¯ä»¥æœ‰è¿”å›å€¼
  */
 public class T03_Callable {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
@@ -16,9 +16,9 @@ public class T03_Callable {
         };
 
         ExecutorService service = Executors.newCachedThreadPool();
-        //Òì²½
+        //å¼‚æ­¥
         Future<String> future = service.submit(c);
-        //×èÈû, ÖĞÍ¾¿ÉÒÔ´¦ÀíÒ»Ğ©ÒµÎñÂß¼­
+        //é˜»å¡, ä¸­é€”å¯ä»¥å¤„ç†ä¸€äº›ä¸šåŠ¡é€»è¾‘
         System.out.println(future.get());
 
         service.shutdown();

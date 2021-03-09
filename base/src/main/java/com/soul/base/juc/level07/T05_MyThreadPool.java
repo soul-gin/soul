@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class T05_00_HelloThreadPool {
+public class T05_MyThreadPool {
 
     static class Task implements Runnable {
         private int i;

@@ -4,16 +4,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * ÈÏÊ¶Executors, Ïß³Ì³ØµÄ¹¤³§
+ * è®¤è¯†Executors, çº¿ç¨‹æ± çš„å·¥å‚
  */
 public class T04_Executors {
 	public static void main(String[] args) {
 		//Executors
-		//±ØĞëÍ¨¹ı ThreadPoolExecutor À´´´½¨Ïß³Ì³Ø, ¹æ±ÜÏÂÃæÒ»ÏµÁĞÎÊÌâ
-		//Ïß³ÌÊıÉÏÏŞÎª Integer.MAX_VALUE ¿ÉÄÜ»á²úÉú´óÁ¿Ïß³Ì, µ¼ÖÂOOM
+		//å¿…é¡»é€šè¿‡ ThreadPoolExecutor æ¥åˆ›å»ºçº¿ç¨‹æ± , è§„é¿ä¸‹é¢ä¸€ç³»åˆ—é—®é¢˜
+		//çº¿ç¨‹æ•°ä¸Šé™ä¸º Integer.MAX_VALUE å¯èƒ½ä¼šäº§ç”Ÿå¤§é‡çº¿ç¨‹, å¯¼è‡´OOM
 		ExecutorService executorService1 = Executors.newCachedThreadPool();
 
-		//ÔÊĞíÇëÇóµÄ¶ÓÁĞÉÏÏŞÎª Integer.MAX_VALUE ¿ÉÄÜ»áµ¼ÖÂOOM
+		//å…è®¸è¯·æ±‚çš„é˜Ÿåˆ—ä¸Šé™ä¸º Integer.MAX_VALUE å¯èƒ½ä¼šå¯¼è‡´OOM
 		ExecutorService executorService2 = Executors.newSingleThreadExecutor();
 		ExecutorService executorService3 = Executors.newFixedThreadPool(10);
 

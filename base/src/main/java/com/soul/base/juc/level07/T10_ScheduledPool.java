@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 public class T10_ScheduledPool {
 	public static void main(String[] args) {
-		//¶¨Ê±ÈÎÎñÏß³Ì³Ø, Ò²²»³£ÓÃ; Õý³£Ê¹ÓÃ¶¨Ê±ÈÎÎñ¿ò¼Ü: Quartz elastic-job xxl-job
+		//å®šæ—¶ä»»åŠ¡çº¿ç¨‹æ± , ä¹Ÿä¸å¸¸ç”¨; æ­£å¸¸ä½¿ç”¨å®šæ—¶ä»»åŠ¡æ¡†æž¶: Quartz elastic-job xxl-job
 		ScheduledExecutorService service = Executors.newScheduledThreadPool(4);
 		service.scheduleAtFixedRate(()->{
 			try {
@@ -17,6 +17,6 @@ public class T10_ScheduledPool {
 			}
 			System.out.println(Thread.currentThread().getName());
 		}, 0, 500, TimeUnit.MILLISECONDS);
-		
+
 	}
 }

@@ -5,19 +5,19 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- * ÈÏÊ¶ExecutorService,ÔÄ¶ÁAPIÎÄµµ
- * ÈÏÊ¶submit·½·¨£¬À©Õ¹ÁËexecute·½·¨£¬¾ßÓĞÒ»¸ö·µ»ØÖµ
+ * è®¤è¯†ExecutorService,é˜…è¯»APIæ–‡æ¡£
+ * è®¤è¯†submitæ–¹æ³•ï¼Œæ‰©å±•äº†executeæ–¹æ³•ï¼Œå…·æœ‰ä¸€ä¸ªè¿”å›å€¼
  *
  * concurrent vs parallel
- * concurrent, ²¢·¢, Ö¸ÈÎÎñµÄÌá½»
- * parallel, ²¢ĞĞ, Ö¸ÈÎÎñÖ´ĞĞ(ÔÚ¶à¸öcpuÉÏÖ´ĞĞ)
- * ²¢ĞĞÊÇ²¢·¢µÄ×Ó¼¯
+ * concurrent, å¹¶å‘, æŒ‡ä»»åŠ¡çš„æäº¤
+ * parallel, å¹¶è¡Œ, æŒ‡ä»»åŠ¡æ‰§è¡Œ(åœ¨å¤šä¸ªcpuä¸Šæ‰§è¡Œ)
+ * å¹¶è¡Œæ˜¯å¹¶å‘çš„å­é›†
  */
 public class T02_ExecutorService  {
     public static void main(String[] args) {
         ExecutorService e = Executors.newCachedThreadPool();
         e.submit(() -> System.out.println("hello ExecutorService"));
-        //Í£Ö¹
+        //åœæ­¢
         e.shutdown();
     }
 }

@@ -3,7 +3,6 @@ package com.soul.base.juc.level07;
 import java.util.concurrent.Executor;
 
 /**
- *
  * Executor -> 执行提交的任务的对象
  * ExecutorService -> 在Executor基础上扩展了submit 等方法
  * Callable = Runnable + result (可以返回处理结果的Runnable)
@@ -11,11 +10,11 @@ import java.util.concurrent.Executor;
  * ThreadPool
  * Future -> 存储将来执行后产生的结果
  * FutureTask -> Future + Runnable
- *
+ * <p>
  * fixed cached single scheduled workstealing forkjoin
- *
+ * <p>
  * ThreadpoolExecutor
- *
+ * <p>
  * PStreamAPI
  */
 public class T01_MyExecutor implements Executor {
@@ -32,4 +31,3 @@ public class T01_MyExecutor implements Executor {
     }
 
 }
-

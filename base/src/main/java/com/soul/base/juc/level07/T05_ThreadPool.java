@@ -5,7 +5,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * �̳߳صĸ���
+ * 线程池的概念
  */
 public class T05_ThreadPool {
 	public static void main(String[] args) throws InterruptedException {
@@ -21,12 +21,12 @@ public class T05_ThreadPool {
 			});
 		}
 		System.out.println(service);
-		
+
 		service.shutdown();
 		System.out.println(service.isTerminated());
 		System.out.println(service.isShutdown());
 		System.out.println(service);
-		
+
 		TimeUnit.SECONDS.sleep(5);
 		System.out.println(service.isTerminated());
 		System.out.println(service.isShutdown());
