@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.soul</groupId>
-    <artifactId>jmh</artifactId>
+    <artifactId>jmh-disruptor</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>jmh</name>
+    <name>jmh-disruptor</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
